@@ -1,3 +1,11 @@
+# Welcome to this strange version of tic-tac-toe game!
+# The rules here are so oversimplified - 
+# the human moves first, as he has "X",
+# the computer moves after, it has "O".
+# To simplify the understanding of method's role, 
+# I'll introduce you definition of marks here:
+# ! - Means that it is used in main cycle
+# (method's name) - Means that it is called inside the method 
 from abc import ABC
 import game
 class Players(ABC):
@@ -13,27 +21,27 @@ class Human(Players):
     def __init__(self):
         super().__init__()
         self.sign = "X"
-    def choose_move(self):
+    def choose_move(self):    # (.ask_move())
         move = game.ask_question("Choose your next move's index: ", 0, 9)
         return move
     def win(self):
         print("____COMPUTER____")
         print("NOOOOOOOO WHY SILLY HUMAN HAS WON???!")
-    def add(self, move):
+    def add(self, move):    # (.ask_move())
         self.moves.append(move)
 
 class Computer(Players):
     def __init__(self):
         super().__init__()
         self.sign = "O"
-    def choose_move(self):
+    def choose_move(self):    # (.ask_move())
         import random
         move = random.randrange(0, 9)
         return move
-    def win(self):
+    def win(self):  # !
         print("____COMPUTER____")
         print("HAHAHAHHAHAHHAHAHHHAHAHAHAHAH I BEAT YOU MAN")
-    def add(self, move):
+    def add(self, move):    # (.ask_move())
         print("____COMPUTER____")
         print("Now it's my turn!")
         self.moves.append(move)
@@ -48,7 +56,7 @@ class Board:
     def __setitem__(self, key, value):
         self.board[key] = value
         return self.board
-    def show_board(self):
+    def show_board(self):  # !
         for square, value in enumerate(self.board):
             if (square+1)%3==0:
                 print(f'{value}')  # As the string ends, it prints the line
@@ -74,7 +82,7 @@ class Game:
         self.results = []
         self.squares = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-    def ask_move(self):  # (!)
+    def ask_move(self):  # !
         move = None
         while move not in self.squares:  # If the selected square has already been an str
             move = self.players[0].choose_move()
@@ -83,15 +91,15 @@ class Game:
         self.change_board(self.players[0])
         self.change_combinations(move)
 
-    def change_board(self, player):
-        for move in range(len(player.moves)):
-            for number in range(len(self.table.board)):  # Because it is a tender method, we define .board, as it is obj
+    def change_board(self, player):    # (.ask_move())
+        for move in range(len(player.moves)):#
+            for number in range(len(self.table.board)):  
                 if player.moves[move] == self.table.board[number]:
                     self.table.board[number] = player.sign
 
-    def change_combinations(self, move):  # ()  As it was, nothing changed
+    def change_combinations(self, move):  # (.ask_move())
         player = self.players[0]
-        for round in range(len(self.combinations)):  # checking parentheses
+        for round in range(len(self.combinations)):  
             for number in range(len(self.combinations[round])):
                 if move == self.combinations[round][number]:
                     self.combinations[round][number] = player.sign
@@ -115,7 +123,7 @@ class Game:
     def order(self):  # !
         self.players.reverse()
 
-    def game(self):
+    def game(self):  # Here is the main cycle
         victory = "Draft"  # The initial, and if the .checking_three returned nothing
         while not self.squares_ended():
             print()
